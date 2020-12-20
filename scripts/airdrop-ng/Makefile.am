@@ -62,8 +62,4 @@ clean-local:
 EXTRA_DIST = airdrop \
 			 airdrop-ng \
 			 README \
-			 setup.py \
-			 old-installers
-
-
-@CODE_COVERAGE_RULES@
+			 setup.py

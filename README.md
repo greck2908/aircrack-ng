@@ -2,14 +2,17 @@
 
 [![Linux/Mac Build Status](https://travis-ci.org/aircrack-ng/aircrack-ng.svg?branch=master)](https://travis-ci.org/aircrack-ng/aircrack-ng)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/aircrack-ng/aircrack-ng?branch=master&svg=true)](https://ci.appveyor.com/project/aircrack-ng/aircrack-ng)
-[![Intel Compiler Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng.png?left_text=Intel%20Compiler%20Build)](https://buildbot.aircrack-ng.org/)
-[![Alpine Linux Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-alpine.png?left_text=Alpine%20Linux%20Build)](https://buildbot.aircrack-ng.org/)
-[![Kali Linux Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-kali.png?left_text=Kali%20Linux%20Build)](https://buildbot.aircrack-ng.org/)
-[![Armel Kali Linux Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-armel.png?left_text=Armel%20Kali%20Linux%20Build)](https://buildbot.aircrack-ng.org/)
-[![Armhf Kali Linux Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-armhf.png?left_text=Armhf%20Kali%20Linux%20Build)](https://buildbot.aircrack-ng.org/)
-[![FreeBSD Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-bsd.png?left_text=FreeBSD%20Build)](https://buildbot.aircrack-ng.org/)
+[![Intel Compiler Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng.svg?left_text=Intel%20Compiler%20Build)](https://buildbot.aircrack-ng.org/)
+[![Alpine Linux Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-alpine.svg?left_text=Alpine%20Linux%20Build)](https://buildbot.aircrack-ng.org/)
+[![Kali Linux Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-kali.svg?left_text=Kali%20Linux%20Build)](https://buildbot.aircrack-ng.org/)
+[![Armel Kali Linux Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-armel.svg?left_text=Armel%20Kali%20Linux%20Build)](https://buildbot.aircrack-ng.org/)
+[![Armhf Kali Linux Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-armhf.svg?left_text=Armhf%20Kali%20Linux%20Build)](https://buildbot.aircrack-ng.org/)
+[![DragonFly BSD Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-dfly.svg?left_text=DragonFly%20Build)](https://buildbot.aircrack-ng.org/)
+[![FreeBSD 11 Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-fbsd-11.svg?left_text=FreeBSD%2011%20Build)](https://buildbot.aircrack-ng.org/)
+[![FreeBSD 12 Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-fbsd-12.svg?left_text=FreeBSD%2012%20Build)](https://buildbot.aircrack-ng.org/)
+[![OpenBSD 6 Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-obsd.svg?left_text=OpenBSD%20Build)](https://buildbot.aircrack-ng.org/)
+[![NetBSD 8.1 Build Status](https://buildbot.aircrack-ng.org/badges/aircrack-ng-netbsd81.svg?left_text=NetBSD%20Build)](https://buildbot.aircrack-ng.org/)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/aircrack-ng/badge.svg)](https://scan.coverity.com/projects/aircrack-ng)
-[![Coveralls Coverage Status](https://coveralls.io/repos/github/aircrack-ng/aircrack-ng/badge.svg?branch=master)](https://coveralls.io/github/aircrack-ng/aircrack-ng?branch=master)
 [![PackageCloud DEB](https://img.shields.io/badge/deb-packagecloud.io-844fec.svg)](https://packagecloud.io/aircrack-ng/git/install#bash-deb)
 [![PackageCloud RPM](https://img.shields.io/badge/rpm-packagecloud.io-844fec.svg)](https://packagecloud.io/aircrack-ng/git/install#bash-rpm)
 
@@ -32,13 +35,17 @@ All tools are command line which allows for heavy scripting. A lot of GUIs have 
  * Libtool
  * shtool
  * OpenSSL development package or libgcrypt development package.
- * Airmon-ng (Linux) requires ethtool.
+ * Airmon-ng (Linux) requires ethtool, usbutils, and often pciutils.
  * On windows, cygwin has to be used and it also requires w32api package.
  * On Windows, if using clang, libiconv and libiconv-devel
  * Linux: LibNetlink 1 or 3. It can be disabled by passing --disable-libnl to configure.
  * pkg-config (pkgconf on FreeBSD)
  * FreeBSD, OpenBSD, NetBSD, Solaris and OS X with macports: gmake
  * Linux/Cygwin: make and Standard C++ Library development package (Debian: libstdc++-dev)
+
+Note: Airmon-ng only requires pciutils if the system has a PCI/PCIe bus and it is populated.
+      Such bus can be present even if not physically visible. For example, it is present,
+      and populated on the Raspberry Pi 4, therefore pciutils is required on that device.
 
 ## Optional stuff
 
@@ -49,37 +56,57 @@ All tools are command line which allows for heavy scripting. A lot of GUIs have 
  * If you want to use Airpcap, the 'developer' directory from the CD/ISO/SDK is required.
  * In order to build `besside-ng`, `besside-ng-crawler`, `easside-ng`, `tkiptun-ng` and `wesside-ng`,
    libpcap development package is required (on Cygwin, use the Aircap SDK instead; see above)
- * For best performance on FreeBSD (50-70% more), install gcc5 (or better) via: pkg install gcc7
+ * For best performance on FreeBSD (50-70% more), install gcc5 (or better) via: pkg install gcc9
  * rfkill
+ * If you want Airodump-ng to log GPS coordinates, gpsd is needed
  * For best performance on SMP machines, ensure the hwloc library and headers are installed. It is strongly recommended on high core count systems, it may give a serious speed boost
  * CMocka for unit testing
+ * For intergation testing on Linux only: tcpdump, HostAPd, WPA Supplicant and screen
 
 ## Installing required and optional dependencies
 
 Below are instructions for installing the basic requirements to build
 `aircrack-ng` for a number of operating systems.
 
-**Note**: CMocka should not be a dependency when packaging Aircrack-ng.
+**Note**: CMocka, tcpdump, screen, HostAPd and WPA Supplicant should not be dependencies when packaging Aircrack-ng.
 
 ### Linux
 
 #### Debian/Ubuntu
 
-    sudo apt-get install build-essential autoconf automake libtool pkg-config libnl-3-dev libnl-genl-3-dev libssl-dev ethtool shtool rfkill zlib1g-dev libpcap-dev libsqlite3-dev libpcre3-dev libhwloc-dev libcmocka-dev
+    sudo apt-get install build-essential autoconf automake libtool pkg-config libnl-3-dev libnl-genl-3-dev libssl-dev ethtool shtool rfkill zlib1g-dev libpcap-dev libsqlite3-dev libpcre3-dev libhwloc-dev libcmocka-dev hostapd wpasupplicant tcpdump screen iw usbutils
 
 #### Fedora/CentOS/RHEL
 
-    sudo yum install libtool pkgconfig sqlite-devel autoconf automake openssl-devel libpcap-devel pcre-devel rfkill libnl3-devel gcc gcc-c++ ethtool hwloc-devel libcmocka-devel
+    sudo yum install libtool pkgconfig sqlite-devel autoconf automake openssl-devel libpcap-devel pcre-devel rfkill libnl3-devel gcc gcc-c++ ethtool hwloc-devel libcmocka-devel git make file expect hostapd wpa_supplicant iw usbutils tcpdump screen
+
+**Note**: on CentOS and RedHat, HostAPd requires 'epel' repository to be enabled: sudo yum install epel-release
+
+#### openSUSE
+
+    sudo zypper install autoconf automake libtool pkg-config libnl3-devel libopenssl-1_1-devel zlib-devel libpcap-devel sqlite3-devel pcre-devel hwloc-devel libcmocka-devel hostapd wpa_supplicant tcpdump screen iw gcc-c++ gcc
+
+#### Mageia
+
+    sudo urpmi autoconf automake libtool pkgconfig libnl3-devel libopenssl-devel zlib-devel libpcap-devel sqlite3-devel pcre-devel hwloc-devel libcmocka-devel hostapd wpa_supplicant tcpdump screen iw gcc-c++ gcc make
+
+#### Alpine
+
+    sudo apk add gcc g++ make autoconf automake libtool libnl3-dev openssl-dev ethtool libpcap-dev cmocka-dev hostapd wpa_supplicant tcpdump screen iw pkgconf util-linux sqlite-dev pcre-dev linux-headers zlib-dev
 
 ### BSD
 
 #### FreeBSD
 
-    pkg install pkgconf shtool libtool gcc7 automake autoconf pcre sqlite3 openssl gmake hwloc cmocka
+    pkg install pkgconf shtool libtool gcc9 automake autoconf pcre sqlite3 openssl gmake hwloc cmocka
 
 #### DragonflyBSD
 
-    pkg install pkgconf shtool libtool gcc7 automake autoconf pcre sqlite3 libgcrypt gmake cmocka
+    pkg install pkgconf shtool libtool gcc8 automake autoconf pcre sqlite3 libgcrypt gmake cmocka
+
+#### OpenBSD
+
+    pkg_add pkgconf shtool libtool gcc automake autoconf pcre sqlite3 openssl gmake cmocka
 
 ### OSX
 
@@ -99,7 +126,7 @@ packages download location, and a mirror URL.
 An example of automatically installing all the dependencies
 is as follows:
 
-    c:\cygwin\setup-x86.exe -qnNdO -R C:/cygwin -s http://cygwin.mirror.constant.com -l C:/cygwin/var/cache/setup -P autoconf -P automake -P bison -P gcc-core -P gcc-g++ -P mingw-runtime -P mingw-binutils -P mingw-gcc-core -P mingw-gcc-g++ -P mingw-pthreads -P mingw-w32api -P libtool -P make -P python -P gettext-devel -P gettext -P intltool -P libiconv -P pkg-config -P git -P wget -P curl -P libpcre-devel -P openssl-devel -P libsqlite3-devel
+    c:\cygwin\setup-x86.exe -qnNdO -R C:/cygwin -s http://cygwin.mirror.constant.com -l C:/cygwin/var/cache/setup -P autoconf -P automake -P bison -P gcc-core -P gcc-g++ -P mingw-runtime -P mingw-binutils -P mingw-gcc-core -P mingw-gcc-g++ -P mingw-pthreads -P mingw-w32api -P libtool -P make -P python -P gettext-devel -P gettext -P intltool -P libiconv -P pkg-config -P git -P wget -P curl -P libpcre-devel -P libssl-devel -P libsqlite3-devel
 
 #### MSYS2
 
@@ -136,6 +163,10 @@ Finally, the additional targets listed below may be of use in your environment:
  * Execute all unit testing:
 
     `make check`
+
+ * Execute all integration testing (requires root):
+ 
+    `make integration`
 
  * Installing:
 
@@ -194,6 +225,8 @@ to your choosing:
                     Must be used with --enable-static --disable-shared. When using those 2 options, the default
                     is to compile the generic optimization in the binary. --with-static-simd merely allows
                     to choose another one.
+
+* **enable-maintainer-mode**: It is important to enable this flag when developing with Aircrack-ng. This flag enables additional compile warnings and safety features.
 
 #### Examples:
 
@@ -268,10 +301,10 @@ to your choosing:
     make check
     ```
 
-  * Compiling on FreeBSD with better performance
+  * Compiling on FreeBSD with gcc9
 
     ```
-    env CC=gcc7 CXX=g++7 MAKE=gmake ./configure
+    env CC=gcc9 CXX=g++9 MAKE=gmake ./configure
     gmake
     ```
 
@@ -288,13 +321,34 @@ to your choosing:
     make
     ```
 
- * Compiling on DragonflyBSD with gcrypt using GCC 7
+ * Compiling on DragonflyBSD with gcrypt using GCC 8
 
    ```
    autoreconf -i
-   env CC=gcc7 CXX=g++7 MAKE=gmake ./configure --with-experimental --with-gcrypt
+   env CC=gcc8 CXX=g++8 MAKE=gmake ./configure --with-experimental --with-gcrypt
    gmake
    ```
+
+ * Compiling on OpenBSD (with autoconf 2.69 and automake 1.16)
+
+   ```
+   export AUTOCONF_VERSION=2.69
+   export AUTOMAKE_VERSION=1.16
+   autoreconf -i
+   env MAKE=gmake ./configure
+   gmake
+   ```
+
+ * Compiling and debugging aircrack-ng
+
+   ```
+   export CFLAGS='-O0 -g'
+   export CXXFLAGS='-O0 -g'
+   ./configure --with-experimental --enable-maintainer-mode --without-opt
+   make
+   LD_LIBRARY_PATH=.libs gdb --args ./aircrack-ng [PARAMETERS]
+   ```
+
 
 # Packaging
 
@@ -327,3 +381,7 @@ Documentation, tutorials, ... can be found on https://aircrack-ng.org
 See also manpages and the forum.
 
 For further information check the [README](README) file
+
+# Infrastructure sponsors
+
+<img src="https://uploads-ssl.webflow.com/5ac3c046c82724970fc60918/5c019d917bba312af7553b49_MacStadium-developerlogo.png" alt="MacStadium" width="150" height="61">

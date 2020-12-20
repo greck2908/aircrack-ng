@@ -44,6 +44,10 @@ all-local:
 		--build-base $(shell $(READLINK) -f $(builddir))/build \
 		--verbose )
 
+install-data-local:
+	$(MKDIR_P) $(DESTDIR)$(datadir)/airgraph-ng
+	touch $(DESTDIR)$(datadir)/airgraph-ng/.keepthisfolder
+
 install-exec-local:
 	( cd $(srcdir) && $(MKDIR_P) $(DESTDIR)$(pkgpythondir) && \
 		$(PYTHON) $(srcdir)/setup.py install \
@@ -63,9 +67,6 @@ EXTRA_DIST = airgraph-ng \
 			 airodump-join \
 			 lib \
 			 setup.py \
-			 graphviz \
+			 airgraphviz \
 			 README \
 			 test
-
-
-@CODE_COVERAGE_RULES@

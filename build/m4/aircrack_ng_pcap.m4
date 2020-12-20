@@ -103,14 +103,15 @@ dnl Locate the library
 dnl
 AS_IF([test "$PCAP_FOUND" = yes], [
 	if test "x$static_pcap" != "xno"; then
-		AX_EXT_HAVE_STATIC_LIB(PCAP, DEFAULT_STATIC_LIB_SEARCH_PATHS, pcap libpcap, pcap_open_live)
+		AC_REQUIRE([AX_EXT_HAVE_STATIC_LIB_DETECT])
+		AX_EXT_HAVE_STATIC_LIB(PCAP, ${DEFAULT_STATIC_LIB_SEARCH_PATHS}, pcap libpcap, pcap_open_live)
 		if test "x$PCAP_FOUND" = xyes; then
-			AC_DEFINE([HAVE_PCAP], [1])
+			AC_DEFINE([HAVE_PCAP], [1], [Define this if you have libpcap on your system])
 		fi
 	else
 		AC_CHECK_LIB([pcap], [pcap_open_live], [
 			PCAP_LIBS=-lpcap
-			AC_DEFINE([HAVE_PCAP], [1])
+			AC_DEFINE([HAVE_PCAP], [1], [Define this if you have libpcap on your system])
 			AC_SUBST(PCAP_LIBS)
 
 			PCAP_FOUND=yes

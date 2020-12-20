@@ -44,7 +44,8 @@ AC_ARG_ENABLE(static-pcre,
     [static_pcre=$enableval], [static_pcre=no])
 
 if test "x$static_pcre" != "xno"; then
-	AX_EXT_HAVE_STATIC_LIB(PCRE, DEFAULT_STATIC_LIB_SEARCH_PATHS, pcre libpcre, pcre_version)
+	AC_REQUIRE([AX_EXT_HAVE_STATIC_LIB_DETECT])
+	AX_EXT_HAVE_STATIC_LIB(PCRE, ${DEFAULT_STATIC_LIB_SEARCH_PATHS}, pcre libpcre, pcre_version)
 	if test "x$PCRE_FOUND" = xyes; then
 		HAVE_PCRE=yes
 	else
@@ -55,6 +56,6 @@ else
 fi
 
 AS_IF([test "x$HAVE_PCRE" = "xyes"], [
-    AC_DEFINE([HAVE_PCRE], [1])
+    AC_DEFINE([HAVE_PCRE], [1], [Define this if you have libpcre on your system])
 ])
 ])

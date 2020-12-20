@@ -8,6 +8,7 @@ indent_size=4
 [{*.c,*.cp,*.cc,*.hpp,*.cpp,*.tcc,*.hp,*.cxx,*.icc,*.mm,*.hxx,*.ii,*.hh,*.m,*.i,*.h,*.h++,*.c++,*.pch,*.inl}]
 indent_style=tab
 indent_size=4
+insert_final_newline=false
 
 [{CMakeLists.txt,*.cmake}]
 indent_style=space
@@ -15,7 +16,7 @@ indent_size=2
 
 [{Makefile.*,Makefile,GNUmakefile,makefile,*.mk}]
 indent_style=tab
-tab_width=4
+tab_width=2
 
 [{*.yml,*.yaml}]
 indent_style=space
