@@ -2,7 +2,7 @@
 
 set -ef
 
-"${abs_builddir}/../aircrack-ng${EXEEXT}" \
+"${top_builddir}/src/aircrack-ng${EXEEXT}" \
     ${AIRCRACK_NG_ARGS} \
     -w "${abs_srcdir}/password.lst" \
     -a 2 \
@@ -18,7 +18,7 @@ set -ef
 	"${abs_srcdir}/Chinese-SSID-Name.pcap" \
 	"${abs_srcdir}/wpaclean_crash.pcap" \
 	"${abs_srcdir}/wps2.0.pcap" | \
-        ${GREP} 'KEY FOUND! \[ biscotte \]'
+        grep 'KEY FOUND! \[ biscotte \]'
 
 exit 0
 

@@ -64,3 +64,6 @@ endif
 
 EXTRA_DIST = airmon-ng.freebsd airmon-ng.linux
 CLEANFILES = airmon-ng
+
+
+@CODE_COVERAGE_RULES@

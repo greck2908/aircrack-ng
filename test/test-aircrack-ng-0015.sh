@@ -2,13 +2,13 @@
 
 set -ef
 
-echo "staytogether" | "${abs_builddir}/../aircrack-ng${EXEEXT}" \
+echo "staytogether" | "${top_builddir}/src/aircrack-ng${EXEEXT}" \
     ${AIRCRACK_NG_ARGS} \
     -e "Stay Alfred" \
     -w - \
     "${abs_srcdir}/StayAlfred.hccapx" \
     -l /dev/null | \
-        ${GREP} "KEY FOUND"
+        grep "KEY FOUND"
 
 exit 0
 

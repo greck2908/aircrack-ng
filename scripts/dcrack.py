@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 import sys
 import os
@@ -51,72 +51,25 @@ class ServerHandler(SimpleHTTPRequestHandler):
 		s.wfile.write(bytes(result, "UTF-8"))
 
 	def do_POST(s):
-		POST_failure = True
+		if ("dict" in s.path):
+			s.do_upload_dict()
 
-		# Read data here and pass it, so we can handle chunked encoding
-		if ("dict" in s.path) or ("cap" in s.path):
+		if ("cap" in s.path):
+			s.do_upload_cap()
 
-			tmp_file = "/tmp/" + next(tempfile._get_candidate_names())
-			with open(tmp_file, "wb") as fid:
-				if s.headers.get('Content-Length'):
-					cl = int(s.headers['Content-Length'])
-					fid.write(s.rfile.read(cl))
-					POST_failure = False
-				# elif s.headers.get('Transfer-Encoding') and s.headers['Transfer-Encoding'] == "chunked":
-				elif s.headers.get('Transfer-Encoding') == "chunked":
-					# With Python3, we need to handle chunked encoding
-					# If someone has a better solution, I'm all ears
+		s.send_response(200)
+		s.send_header("Content-type", "text/plain")
+		s.end_headers()
+		s.wfile.write(bytes("OK", "UTF-8"))
 
-					while True:
-						chunk_size_hex = ""
-
-						# Get size
-						while True:
-							c = s.rfile.read(1)
-							if sys.version_info[0] >= 3:
-								c = chr(c[0])
-							if c == '\r':
-								# Skip next char ('\n')
-								c = s.rfile.read(1)
-								break
-							chunk_size_hex += c
-
-						# If string is empty, that's the end of it
-						if not chunk_size_hex:
-							break
-
-						# Convert from hex to integer
-						chunk_size = int(chunk_size_hex, 16)
-
-						# Read the amount of bytes
-						fid.write(s.rfile.read(chunk_size))
-					POST_failure = False
-
-			if (POST_failure == False):
-				if ("dict" in s.path):
-					s.do_upload_dict(tmp_file)
-
-				if ("cap" in s.path):
-					s.do_upload_cap(tmp_file)
-
-		try:
-			s.send_response(200)
-			s.send_header("Content-type", "text/plain")
-			s.end_headers()
-			if POST_failure == False:
-				s.wfile.write(bytes("OK", "UTF-8"))
-			else:
-				s.wfile.write(bytes("NO", "UTF-8"))
-		except BrokenPipeError as bpe:
-			# Connection closed, ignore
-			pass
-
-	def do_upload_dict(s, filename):
+	def do_upload_dict(s):
 		con = get_con()
 
 		f = "dcrack-dict"
 		c = f + ".gz"
-		os.rename(filename, c)
+		with open(c, "wb") as fid:
+			cl = int(s.headers['Content-Length'])
+			fid.write(s.rfile.read(cl))
 
 		decompress(f)
 
@@ -134,10 +87,11 @@ class ServerHandler(SimpleHTTPRequestHandler):
 		c.execute("INSERT into dict values (?, ?, 0)", (h, i))
 		con.commit()
 
-	def do_upload_cap(s, filename):
-
+	def do_upload_cap(s):
+		cl = int(s.headers['Content-Length'])
 		tmp_cap = "/tmp/" + next(tempfile._get_candidate_names()) + ".cap"
-		os.rename(filename, tmp_cap + ".gz")
+		with open(tmp_cap + ".gz", "wb") as fid:
+			fid.write(s.rfile.read(cl))
 
 		decompress(tmp_cap)
         
@@ -650,7 +604,7 @@ def get_speed():
 	speed = p.stdout.readline()
 	speed = speed.split()
 	speed = speed[len(speed) - 2]
-	return int(float(speed))
+	return int(speed)
 
 def get_cid():
 	return random.getrandbits(64)
@@ -719,7 +673,6 @@ def get_work():
 
 	cracker = None
 
-	KEY_FOUND_STR = "KEY FOUND! [ "
 	if ("not in dictionary" in res):
 		print("No luck")
 		u = "%snet/%s/result?wl=%s&start=%d&end=%d&found=0" % \
@@ -727,18 +680,14 @@ def get_work():
 			crack['start'], crack['end'])
 
 		stuff = urlopen(u).read()
-	elif KEY_FOUND_STR in res:
-		start_pos = res.find(KEY_FOUND_STR) + len(KEY_FOUND_STR)
+	elif "KEY FOUND" in res:
+		pw = re.sub("^.*\[ ", "", res)
 
-		end_pos = res.rfind(" ]")
-		if end_pos == -1 or end_pos - start_pos < 1:
+		i = pw.rfind(" ]")
+		if i == -1:
 			raise BaseException("Can't parse output")
-		if end_pos - start_pos < 8:
-			raise BaseException("Failed parsing - Key too short")
-		if end_pos - start_pos > 63:
-			raise BaseException("Failed parsing - Key too long")
 
-		pw = res[start_pos:end_pos]
+		pw = pw[:i]
 
 		print("Key for %s is %s" % (crack['net'], pw))
 
@@ -1057,7 +1006,6 @@ def send_cap():
 
 	u = url + "cap/create"
 	ret = upload_file(u, clean_cap + ".gz")
-	ret = ret.decode("UTF-8")
 	if ret == "OK":
 		print("Upload successful")
 	elif ret == "NO":
@@ -1070,7 +1018,6 @@ def send_cap():
 
 def cmd_crack():
 	ret = net_cmd("crack")
-	ret = ret.decode("UTF-8")
 	if ret == "OK":
 		print("Cracking job successfully added")
 	elif ret == "NO":

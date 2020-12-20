@@ -3,7 +3,7 @@
 set -ef
 
 # Turn our pcap into a hccap
-"${abs_builddir}/../aircrack-ng${EXEEXT}" \
+"${top_builddir}/src/aircrack-ng${EXEEXT}" \
     ${AIRCRACK_NG_ARGS} \
     -J "test" \
     -e "linksys" \
@@ -11,13 +11,13 @@ set -ef
 
 # Make sure we can load it and solve it
 # NOTE: We can't load a HCCAP file. Mostly because it doesn't have a magic number
-#echo "dictionary" | "${abs_builddir}/../aircrack-ng${EXEEXT}" \
+#echo "dictionary" | "${top_builddir}/src/aircrack-ng${EXEEXT}" \
 #    ${AIRCRACK_NG_ARGS} \
 #    -e "linksys" \
 #    -w - \
 #    "test.hccap" \
 #    -l /dev/null | \
-#        ${GREP} "KEY FOUND"
+#        grep "KEY FOUND"
 
 rm -f test.hccap
 

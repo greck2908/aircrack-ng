@@ -66,9 +66,9 @@ apt-get install libssl-dev libnl-genl-3-dev libnl-3-dev pkg-config libsqlite3-de
 
 ```
 wget https://raw.githubusercontent.com/aircrack-ng/aircrack-ng/master/patches/wpe/hostapd-wpe/hostapd-wpe.patch
-wget https://w1.fi/releases/hostapd-2.9.tar.gz
-tar -zxf hostapd-2.9.tar.gz
-cd hostapd-2.9
+wget http://hostap.epitest.fi/releases/hostapd-2.6.tar.gz
+tar -zxf hostapd-2.6.tar.gz
+cd hostapd-2.6
 patch -p1 < ../hostapd-wpe.patch 
 cd hostapd
 ```

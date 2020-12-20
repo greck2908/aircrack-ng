@@ -41,7 +41,7 @@ AC_DEFUN([AIRCRACK_NG_PTHREAD], [
 
 AX_PTHREAD([
     AC_CHECK_LIB([pthread], [pthread_create], [ PTHREAD_LIBS="-lpthread" ])
-    dnl AC_DEFINE([_REENTRANT], [], [Define this if your library functions are re-entrant])
+    AC_DEFINE([_REENTRANT])
 ])
 
 AC_MSG_CHECKING([for pthread_setaffinity_np])

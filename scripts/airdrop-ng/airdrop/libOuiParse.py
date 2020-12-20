@@ -71,7 +71,7 @@ class macOUI_lookup:
         check for valid company name key
         """
         compMatch = re.compile(name,re.I)
-        if name in self.company_oui:
+        if self.company_oui.has_key(name):
             return True
         for key in self.company_oui.keys():
                 if compMatch.search(key) is not None:   
@@ -83,7 +83,7 @@ class macOUI_lookup:
         check for a valid oui prefix
         """
 
-        if name in self.oui_company:
+        if self.oui_company.has_key(name): 
             return True
         else: 
             return False
@@ -106,7 +106,7 @@ class macOUI_lookup:
         if type(companyLst) is list:
             for name in companyLst:
                 compMatch = re.compile(name,re.I)
-                if name in self.company_oui:
+                if self.company_oui.has_key(name):
                     oui.extend(self.company_oui[name])
                 else:
                     for key in self.company_oui:
@@ -114,7 +114,7 @@ class macOUI_lookup:
                             oui.extend(self.company_oui[key])
 
         elif type(companyLst) is str:
-            if companyLst in self.company_oui:
+            if self.company_oui.has_key(companyLst):
                 oui = self.company_oui[companyLst]
             else:
                 
@@ -155,7 +155,7 @@ class macOUI_lookup:
         """
         company_oui = {}
         for oui in self.oui_company:
-            if self.oui_company[oui][0] in company_oui:
+            if company_oui.has_key(self.oui_company[oui][0]):
                 company_oui[self.oui_company[oui][0]].append(oui)
             else:
                 company_oui[self.oui_company[oui][0]] = [oui]

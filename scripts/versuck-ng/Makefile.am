@@ -42,3 +42,6 @@ dist_man1_MANS = versuck-ng.1
 dist_bin_SCRIPTS = versuck-ng
 
 EXTRA_DIST = README
+
+
+@CODE_COVERAGE_RULES@

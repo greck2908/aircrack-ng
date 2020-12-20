@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # Usage: https://github.com/aircrack-ng/aircrack-ng/pull/21
 
 from scapy.all import *

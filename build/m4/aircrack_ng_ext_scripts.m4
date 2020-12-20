@@ -41,17 +41,8 @@ AC_DEFUN([AIRCRACK_NG_EXT_SCRIPTS], [
 
 if test "$cross_compiling" = no;
 then
-	AC_CHECK_PROGS([PYTHON], [python python3 python2])
-	if test $PYTHON = no; then
-		AC_MSG_FAILURE(failed to find Python)
-	fi
-
-    if test "x$PYTHON" != "x"; then
-        pc_cv_python_site_dir=`$PYTHON -c 'import site; print(site.getsitepackages()[[-1]])'`
-        dnl AC_SUBST([pythondir], [\${prefix}/$pc_cv_python_site_dir])
-        AC_SUBST([pythondir], [$pc_cv_python_site_dir])
-        AC_SUBST([pkgpythondir], [\${pythondir}/$PACKAGE_NAME])
-    fi
+    PC_INIT([2.7])
+    PC_PYTHON_SITE_PACKAGE_DIR
 fi
 
 AC_CHECK_PROGS([READLINK], [greadlink readlink])

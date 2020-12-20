@@ -13,6 +13,6 @@ setup(name='airgraph-ng',
       classifiers=[
           'Development Status :: 4 - Beta',
       ],
-      packages=['airgraphviz'],
+      packages=['graphviz'],
       scripts=['airodump-join', 'airgraph-ng'],
      )
